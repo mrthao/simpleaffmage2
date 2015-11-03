@@ -1,1 +1,0 @@
-# simpleaffmage2
