@@ -17,71 +17,156 @@ class InstallSchema implements InstallSchemaInterface {
 		$installer = $setup;
 		$installer->startSetup();
 
-		$installer->getConnection()->dropTable($installer->getTable('dailydeal_deal'));
-		
+		/*--------------------------------------------------------------------------*/
+		$installer->getConnection()->dropTable($installer->getTable('simpleaffiliate_banner'));
 		$table = $installer->getConnection()->newTable(
-			$installer->getTable('dailydeal_deal')
+			$installer->getTable('simpleaffiliate_banner')
 		)->addColumn(
-			'entity_id',
+			'banner_id',
 			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-			10,
+			11,
 			['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
-			'Entity Id'
+			'Banner Id'
 		)->addColumn(
-			'product_id',
-			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-			10,
-			['unsigned' => true, 'nullable' => false, 'default' => '0'],
-			'Product Id'
-		)->addColumn(
-            'price',
-            \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
-            '12,4',
-            ['default' => '0'],
-            'Price'
-        )->addColumn(
-			'deal_qty',
-			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-			10,
-			['unsigned' => true, 'nullable' => false, 'default' => '0'],
-			'Deal Qty'
-		)->addColumn(
-			'seal_qty',
-			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-			10,
-			['unsigned' => true, 'nullable' => false, 'default' => '0'],
-			'seal_qty'
-		)->addColumn(
-			'deal_start',
-			\Magento\Framework\DB\Ddl\Table::TYPE_DATETIME,
-			null,
-			['nullable' => false],
-			'Deal Start'
-		)->addColumn(
-			'deal_end',
-			\Magento\Framework\DB\Ddl\Table::TYPE_DATETIME,
-			null,
-			['nullable' => false],
-			'Deal End'
-		)->addColumn(
-			'store',
+			'title',
 			\Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
 			255,
 			['nullable' => false, 'default' => ''],
-			'Store'
+			'Title'
+		)->addColumn(
+            'image',
+            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+            255,
+            ['nullable' => false,'default' => ''],
+            'Image Path'
+        )->addColumn(
+			'url',
+			\Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+			255,
+			['nullable' => false, 'default' => ''],
+			'Url'
 		)->addColumn(
 			'status',
-			\Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
-			6,
+			\Magento\Framework\DB\Ddl\Table::TYPE_TINYINT,
+			1,
 			['nullable' => false, 'default' => '1'],
 			'Status'
 		);
 		$installer->getConnection()->createTable($table);
-		/**
-		 * End create table dailydeal_deal
-		 */
-		
-		$installer->endSetup();
-
+		/*--------------------------------------------------------------------------*/
+		$installer->getConnection()->dropTable($installer->getTable('simpleaffiliate_account'));
+		$table2 = $installer->getConnection()->newTable(
+			$installer->getTable('simpleaffiliate_account')
+		)->addColumn(
+			'account_id',
+			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+			11,
+			['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+			'Acount Id'
+		)->addColumn(
+			'customer_id',
+			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+			11,
+			['unsigned' => true, 'nullable' => false],
+			'Customer ID'
+		)->addColumn(
+            'fristname',
+            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+            255,
+            ['nullable' => false,'default' => ''],
+            'First Name'
+        )->addColumn(
+			'lastname',
+			\Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+			255,
+			['nullable' => false, 'default' => ''],
+			'Last Name'
+		)->addColumn(
+			'email',
+			\Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+			255,
+			['nullable' => false, 'default' => ''],
+			'Email'
+		)->addColumn(
+			'balance',
+			\Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+			'12,4',
+			['nullable' => false],
+			'Balance'
+		)->addColumn(
+			'total_received',
+			\Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+			'12,4',
+			['nullable' => false],
+			'Total Received'
+		)->addColumn(
+			'joined',
+			\Magento\Framework\DB\Ddl\Table::TYPE_DATE,
+			'',
+			['nullable' => false],
+			'Joined'
+		)->addColumn(
+			'status',
+			\Magento\Framework\DB\Ddl\Table::TYPE_TINYINT,
+			1,
+			['nullable' => false, 'default' => '1'],
+			'Status'
+		);
+		$installer->getConnection()->createTable($table2);
+		/*--------------------------------------------------------------------------*/
+		$installer->getConnection()->dropTable($installer->getTable('simpleaffiliate_transaction'));
+		$table3 = $installer->getConnection()->newTable(
+			$installer->getTable('simpleaffiliate_transaction')
+		)->addColumn(
+			'transaction_id',
+			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+			11,
+			['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+			'Transaction Id'
+		)->addColumn(
+			'order_id',
+			\Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+			11,
+			['unsigned' => true, 'nullable' => false],
+			'Order ID'
+		)->addColumn(
+            'affiliate_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+			11,
+            ['nullable' => false],
+            'Affiliate Id'
+        )->addColumn(
+			'order_total',
+			\Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+			'12,4',
+			['nullable' => false, 'default' => 0],
+			'Order Total'
+		)->addColumn(
+			'commission',
+			\Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+			255,
+			['nullable' => false, 'default' => 0],
+			'Commission'
+		)->addColumn(
+			'store',
+			\Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+			6,
+			['nullable' => false],
+			'Store'
+		)->addColumn(
+			'created',
+			\Magento\Framework\DB\Ddl\Table::TYPE_DATETIME,
+			null,
+			['nullable' => false],
+			'Created'
+		)->addColumn(
+			'status',
+			\Magento\Framework\DB\Ddl\Table::TYPE_TINYINT,
+			1,
+			['nullable' => false, 'default' => '1'],
+			'Status'
+		);
+		$installer->getConnection()->createTable($table3);
+		$installer->endSetup();	
 	}
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <body>
+	   <referenceContainer name="content">
+            <block class="Magestore\Bigbabies\Block\Adminhtml\Giftcard\Edit" name="giftcode_edit"/>
+        </referenceContainer>
+		<referenceContainer name="left">
+            <block class="Magestore\Bigbabies\Block\Adminhtml\Giftcard\Edit\Tabs" name="giftcode_edit_tabs">
+                <block class="Magestore\Bigbabies\Block\Adminhtml\Giftcard\Edit\Tab\Giftcode" name="giftcard_edit_tab_giftcode"/>
+				 <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">giftcard_edit_tab_giftcode</argument>
+                </action>
+			</block> 
+        </referenceContainer>
+    </body>
+</page>

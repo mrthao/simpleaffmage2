@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="formkey"/>
+    <update handle="bigbabies_index_grid_block"/>
+    <body>
+          <referenceContainer name="content">
+            <block class="Magestore\Bigbabies\Block\Adminhtml\Gifttemplate" name="template_list"/>
+        </referenceContainer>
+    </body>
+</page>
