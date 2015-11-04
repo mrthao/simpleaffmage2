@@ -2,8 +2,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
     <menu>
     	<add module="Magestore_Simpleaff" id="Magestore_Simpleaff::menus" resource="Magestore_Simpleaff::menus" title="Simple Affiliate" sortOrder="12" />
-        <add module="Magestore_Simpleaff" id="Magestore_Simpleaff::manage_banner" resource="Magestore_Simpleaff::manage_banner" title="Manage Banner" sortOrder="10" parent="Magestore_Simpleaff::menus" action="simpleaff/managebanner" />
+        <add module="Magestore_Simpleaff" id="Magestore_Simpleaff::manage_banner" resource="Magestore_Simpleaff::manage_banner" title="Manage Banner" sortOrder="10" parent="Magestore_Simpleaff::menus" action="simpleaff/banner/index" />
 		<add module="Magestore_Simpleaff" id="Magestore_Simpleaff::manage_aff_accounts" resource="Magestore_Simpleaff::manage_aff_accounts" title="Manage Affilicate Account" sortOrder="15" parent="Magestore_Simpleaff::menus" action="simpleaff/manageaccounts" />
-        <add module="Magestore_Simpleaff" id="Magestore_Simpleaff::settings" resource="Magestore_Simpleaff::settings" title="Settings" module="Magestore_Simpleaff" sortOrder="40" parent="Magestore_Simpleaff::menus" action="simpleaff/system_config/edit/section/simpleaff" />
+        
     </menu>
 </config>

@@ -1,5 +1,5 @@
 <?php
-namespace Magestore\Bigbabies\Block\Adminhtml\Giftcard\Edit;
+namespace Magestore\Simpleaff\Block\Adminhtml\Banner\Edit;
 class Form extends \Magento\Backend\Block\Widget\Form\Generic
 {
     protected function _prepareForm()

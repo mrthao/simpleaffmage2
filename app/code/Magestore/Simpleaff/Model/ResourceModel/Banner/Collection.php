@@ -18,12 +18,21 @@
  * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
  * @license     http://www.magestore.com/license-agreement.html
  */
-namespace Magestore\Simpleaff\Model\Resource\Banner;
+namespace Magestore\Simpleaff\Model\ResourceModel\Banner;
 
-class Collection extends \Magento\Framework\Model\Resource\Db\Collection\AbstractCollection
+use \Magestore\Simpleaff\Model\ResourceModel\AbstractCollection;
+
+class Collection extends AbstractCollection
 {
+	/**
+     * Template table name
+     *
+     * @var string
+     */
+    protected $_templateTable;
     protected function _construct()
     {
-        $this->_init('Magestore\Simpleaff\Model\Banner', 'Magestore\Simpleaff\Model\Resource\Banner');
+        $this->_init('Magestore\Simpleaff\Model\Banner', 'Magestore\Simpleaff\Model\ResourceModel\Banner');
+		$this->_templateTable = $this->getMainTable();
     }
 }

@@ -1,60 +1,36 @@
 <?php
-
-namespace Magestore\Dailydeal\Controller\Adminhtml\Dailydeal;
-
+namespace Magestore\Bigbabies\Controller\Adminhtml\Giftcard;
+use Magento\Backend\App\Action;
 class Edit extends \Magento\Backend\App\Action
 {
-    /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    protected $resultPageFactory;
-    
-    /**
-     * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     */
-    public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
-    ) {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-    }
-
-
-    public function execute()
+	protected function _isAllowed()
     {
-        $id = $this->getRequest()->getParam('entity_id');
-        $model = $this->_objectManager->create('Magestore\Dailydeal\Model\Dailydeal');
-        $registryObject = $this->_objectManager->get('Magento\Framework\Registry');
+        return $this->_authorization->isAllowed('Magestore_Bigbabies::save');
+    }
+	public function execute()
+    {
+		// 1. Get ID and create model
+        $id = $this->getRequest()->getParam('code_id');
+        $model = $this->_objectManager->create('Magestore\Bigbabies\Model\Giftcard\Code');
+		$registryObject = $this->_objectManager->get('Magento\Framework\Registry');
+        // 2. Initial checking
         if ($id) {
             $model->load($id);
             if (!$model->getId()) {
-                $this->messageManager->addError('Dailydeal is not exist.');
+                $this->messageManager->addError(__('This gift code no longer exists.'));
                 $this->_redirect('*/*/');
                 return;
             }
         }
-        
-        $data = $this->_objectManager->create('Magento\Backend\Model\Session')->getFormData(true);
+        // 3. Set entered data if was error when we do save
+        $data = $this->_objectManager->get('Magento\Backend\Model\Session')->getFormData(true);
         if (!empty($data)) {
             $model->setData($data);
         }
-        
-        $registryObject->register('dailydeal_data', $model);
-        $resultPage = $this->resultPageFactory->create();
-        if ($model->getId()) {
-            $resultPage->getConfig()->getTitle()->prepend($model->getDailydeal());
-        } else {    
-            $resultPage->getConfig()->getTitle()->prepend(__('New Dailydeal'));
-        }
-        $this->_view->loadLayout();
+		$registryObject->register('bigbabies_giftcode', $model);
+		
+		$this->_view->loadLayout();
         $this->_view->getLayout()->initMessages();
         $this->_view->renderLayout();
-    }
-    
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magestore_Dailydeal::dailydeal');
     }
 }

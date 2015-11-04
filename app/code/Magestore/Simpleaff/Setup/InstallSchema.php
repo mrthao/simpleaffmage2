@@ -47,8 +47,8 @@ class InstallSchema implements InstallSchemaInterface {
 			'Url'
 		)->addColumn(
 			'status',
-			\Magento\Framework\DB\Ddl\Table::TYPE_TINYINT,
-			1,
+			\Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+			2,
 			['nullable' => false, 'default' => '1'],
 			'Status'
 		);
@@ -107,8 +107,8 @@ class InstallSchema implements InstallSchemaInterface {
 			'Joined'
 		)->addColumn(
 			'status',
-			\Magento\Framework\DB\Ddl\Table::TYPE_TINYINT,
-			1,
+			\Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+			2,
 			['nullable' => false, 'default' => '1'],
 			'Status'
 		);
@@ -161,8 +161,8 @@ class InstallSchema implements InstallSchemaInterface {
 			'Created'
 		)->addColumn(
 			'status',
-			\Magento\Framework\DB\Ddl\Table::TYPE_TINYINT,
-			1,
+			\Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+			2,
 			['nullable' => false, 'default' => '1'],
 			'Status'
 		);

@@ -1,12 +1,14 @@
 <?php
+namespace Magestore\Bigbabies\Controller\Adminhtml\Giftcard;
 
-
-namespace Magestore\Dailydeal\Controller\Adminhtml\Dailydeal;
-
-class NewAction extends \Magestore\Dailydeal\Controller\Adminhtml\Dailydeal
+class NewAction extends \Magento\Backend\App\Action
 {
+	protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Magestore_Bigbabies::save');
+    }
     public function execute()
     {
-        $this->_forward('edit');
+        return $this->_forward('edit');
     }
 }

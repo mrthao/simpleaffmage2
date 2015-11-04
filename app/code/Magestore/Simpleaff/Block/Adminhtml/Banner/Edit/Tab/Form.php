@@ -1,6 +1,6 @@
 <?php
-namespace Magestore\Bigbabies\Block\Adminhtml\Giftcard\Edit\Tab;
-class Giftcode extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
+namespace Magestore\Simpleaff\Block\Adminhtml\Banner\Edit\Tab;
+class Form extends \Magento\Backend\Block\Widget\Form\Generic implements \Magento\Backend\Block\Widget\Tab\TabInterface
 {
     /**
      * @var \Magento\Store\Model\System\Store
@@ -34,17 +34,18 @@ class Giftcode extends \Magento\Backend\Block\Widget\Form\Generic implements \Ma
 
 
     {
-		$model = $this->_coreRegistry->registry('bigbabies_giftcode');
+		$model = $this->_coreRegistry->registry('banner_register');
 		$isElementDisabled = false;
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
 
         $form->setHtmlIdPrefix('page_');
 
-        $fieldset = $form->addFieldset('base_fieldset', array('legend' => __('Gift Code Information')));
+        $fieldset = $form->addFieldset('base_fieldset', array('legend' => __('Banner Information')));
 
         if ($model->getId()) {
-            $fieldset->addField('code_id', 'hidden', array('name' => 'code_id'));
+			$isElementDisabled = true;
+            $fieldset->addField('banner_id', 'hidden', array('name' => 'banner_id'));
         }
 
         $fieldset->addField(
@@ -58,29 +59,42 @@ class Giftcode extends \Magento\Backend\Block\Widget\Form\Generic implements \Ma
                 'disabled' => $isElementDisabled,
             )
         );
+		if($model->getId()){
+			$fieldset->addField(
+				'image',
+				'text',
+				array(
+					'name' => 'image',
+					'label' => __('Image Path'),
+					'title' => __('Image Path'),
+					'required' => true,
+					'disabled' => true,
+				)
+			);
+		}else{
+			$fieldset->addField(
+				\Magento\ImportExport\Model\Import::FIELD_NAME_SOURCE_FILE,
+				'file',
+				[
+					'name' => 'image',
+					'label' => __('Select File to Import'),
+					'title' => __('Select File to Import'),
+					'required' => true,
+					'class' => 'input-file'
+				]
+			);
+		}
 		$fieldset->addField(
-            'giftcode',
+            'url',
             'text',
             array(
-                'name' => 'giftcode',
-                'label' => __('Gift Code'),
-                'title' => __('Title'),
+                'name' => 'url',
+                'label' => __('Url'),
+                'title' => __('Url'),
                 'required' => true,
                 'disabled' => $isElementDisabled,
             )
         );
-		$fieldset->addField(
-            'amount',
-            'text',
-            array(
-                'name' => 'amount',
-                'label' => __('Amount'),
-                'title' => __('Amount'),
-                'required' => true,
-                'disabled' => $isElementDisabled,
-            )
-        );
-		
 		$fieldset->addField(
             'status',
             'select',
@@ -93,6 +107,7 @@ class Giftcode extends \Magento\Backend\Block\Widget\Form\Generic implements \Ma
                 'disabled' => $isElementDisabled
             )
         );
+		
 		if (!$model->getId()) {
             $model->setData('status', $isElementDisabled ? '2' : '1');
         }
@@ -118,7 +133,7 @@ class Giftcode extends \Magento\Backend\Block\Widget\Form\Generic implements \Ma
      */
     public function getTabTitle()
     {
-        return __('Gift Code Information');
+        return __('Banner Information');
     }
 
     /**

@@ -1,12 +1,12 @@
 <?php
-namespace Magestore\Bigbabies\Block\Adminhtml\Giftcard\Edit;
+namespace Magestore\Simpleaff\Block\Adminhtml\Banner\Edit;
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('giftcode_tabs');
+        $this->setId('simpleaff_banner_tabs');
         $this->setDestElementId('edit_form');
-        $this->setTitle(__('Gift Code Information'));
+        $this->setTitle(__('Banner Information'));
     }
 }
