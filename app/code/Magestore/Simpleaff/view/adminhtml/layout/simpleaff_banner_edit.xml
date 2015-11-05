@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Banner Manage</title>
+    </head>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Magestore_Simpleaff::menus</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+			<block class="Magestore\Simpleaff\Block\Adminhtml\Banner\Edit" name="simpleaff.banner.edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+			<block class="Magestore\Simpleaff\Block\Adminhtml\Banner\Edit\Tabs" name="simpleaff.banner.edit.tabs">
+				<block class="Magestore\Simpleaff\Block\Adminhtml\Banner\Edit\Tab\Form" name="simpleaff.banner.edit.tab.form"/>
+			</block>
+        </referenceContainer>
+    </body>
+</page>

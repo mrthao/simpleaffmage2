@@ -34,7 +34,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
 
 
     {
-		$model = $this->_coreRegistry->registry('banner_register');
+		$model = $this->_coreRegistry->registry('simpleaff_banner_register');
 		$isElementDisabled = false;
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();

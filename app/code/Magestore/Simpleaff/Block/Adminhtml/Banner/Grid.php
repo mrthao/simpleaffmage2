@@ -31,81 +31,151 @@ namespace Magestore\Simpleaff\Block\Adminhtml\Banner;
 
 class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
+	protected $_bannerFactory;
 	protected $_collectionFactory;
 	protected $_banner;
-	/**
-     * @var \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface
-     */
-    protected $pageLayoutBuilder;
-    public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magestore\Simpleaff\Model\ResourceModel\Banner\CollectionFactory $bannerFactory,
-        \Magestore\Simpleaff\Model\Banner $banner,
-		\Magento\Framework\View\Model\PageLayout\Config\BuilderInterface $pageLayoutBuilder,
-        array $data = []
-    ) {
-        $this->_collectionFactory = $bannerFactory;
-        $this->_banner = $banner;
-        $this->pageLayoutBuilder = $pageLayoutBuilder;
-        parent::__construct($context, $backendHelper, $data);
-    }
-	/* public function __construct(
+	public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
-        \Magento\Cms\Model\Page $cmsPage,
-        \Magento\Cms\Model\ResourceModel\Page\CollectionFactory $collectionFactory,
-        \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface $pageLayoutBuilder,
+        \Magestore\Simpleaff\Model\Banner $bannerAff,
+        \Magento\Cms\Model\ResourceModel\PageFactory $bannerFactory,
+        \Magestore\Simpleaff\Model\ResourceModel\Banner\CollectionFactory $collectionFactory,
         array $data = []
     ) {
+        $this->_bannerFactory = $bannerFactory;
         $this->_collectionFactory = $collectionFactory;
-        $this->_banner = $cmsPage;
-        $this->pageLayoutBuilder = $pageLayoutBuilder;
+        $this->_banner = $bannerAff;
         parent::__construct($context, $backendHelper, $data);
-    } */
+    }
+    /**
+     * @return void
+     */
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('bannerGrid');
+        $this->setId('bannerAffGrid');
         $this->setDefaultSort('banner_id');
         $this->setDefaultDir('DESC');
-        $this->setSaveParametersInSession(true);
-        $this->setUseAjax(true);
     }
 
+    /**
+     * Prepare collection
+     *
+     * @return \Magento\Backend\Block\Widget\Grid
+     */
     protected function _prepareCollection()
-    {	
-        $collection = $this->_collectionFactory->create();		
-            
+    {
+		$collection = $this->_collectionFactory->create();
         $this->setCollection($collection);
+
         return parent::_prepareCollection();
     }
 
     /**
-     * @return $this
+     * Prepare columns
+     *
+     * @return \Magento\Backend\Block\Widget\Grid\Extended
      */
     protected function _prepareColumns()
     {
+        $this->addColumn('banner_id', ['header' => __('#ID'), 'index' => 'banner_id']);
+        $this->addColumn('image', ['header' => __('Image'), 'index' => 'image']);
         $this->addColumn('title', ['header' => __('Title'), 'index' => 'title']);
-
-        $this->addColumn('identifier', ['header' => __('URL Key'), 'index' => 'identifier']);           
-		$this->addExportType('*/*/exportProductCsv', __('CSV'));
-        $this->addExportType('*/*/exportProductExcel', __('Excel XML'));
+        $this->addColumn('url', ['header' => __('Url'), 'index' => 'url']);
+		$this->addColumn(
+            'status',
+            [
+                'header' => __('Status'),
+                'index' => 'status',
+                'type' => 'options',
+                'options' => $this->_banner->getStatuses()
+            ]
+        );
+		$this->addExportType('*/*/exportCsv', __('CSV'));
+		$this->addExportType('*/*/exportXml', __('XML'));
+		$this->addExportType('*/*/exportExcel', __('Excel'));
         return parent::_prepareColumns();
     }
+	/**
+	 * @return $this
+	 */
+	protected function _prepareMassaction() {
+		$this->setMassactionIdField('mass_banner');
+		$this->getMassactionBlock()->setFormFieldName('banners');
 
+		$this->getMassactionBlock()->addItem(
+			'delete',
+			[
+				'label' => __('Delete'),
+				'url' => $this->getUrl('simpleaff/banner/massDelete'),
+				'confirm' => __('Are you sure?'),
+			]
+		);
+
+		$statuses = $this->_banner->getStatuses();
+
+		array_unshift($statuses, ['label' => '', 'value' => '']);
+		$this->getMassactionBlock()->addItem(
+			'status',
+			[
+				'label' => __('Change status'),
+				'url' => $this->getUrl('simpleaff/banner/massStatus', ['_current' => true]),
+				'additional' => [
+					'visibility' => [
+						'name' => 'status',
+						'type' => 'select',
+						'class' => 'required-entry',
+						'label' => __('Status'),
+						'values' => $statuses,
+					],
+				],
+			]
+		);
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGridUrl() {
+		return $this->getUrl('*/*/grid', array('_current' => true));
+	}
+    /**
+     * After load collection
+     *
+     * @return void
+     */
+    protected function _afterLoadCollection()
+    {
+        $this->getCollection()->walk('afterLoad');
+        parent::_afterLoadCollection();
+    }
 
     /**
+     * Filter store condition
+     *
+     * @param \Magento\Framework\Data\Collection $collection
+     * @param \Magento\Framework\DataObject $column
+     * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    protected function _filterStoreCondition($collection, \Magento\Framework\DataObject $column)
+    {
+        if (!($value = $column->getFilter()->getValue())) {
+            return;
+        }
+
+        $this->getCollection()->addStoreFilter($value);
+    }
+
+    /**
+     * Row click url
+     *
+     * @param \Magento\Framework\DataObject $row
      * @return string
      */
-    public function getGridUrl()
-    {
-        return $this->getUrl('simpleaff/banner/grid', array('_current' => true));
-    }
     public function getRowUrl($row)
     {
-        return $this->getUrl(
-            'simpleaff/banner/edit',
-            array('banner_id' => $row->getId())
-        );
+        return $this->getUrl('*/*/edit', ['banner_id' => $row->getId()]);
     }
 }

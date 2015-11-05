@@ -13,8 +13,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     }
     public function getHeaderText()
     {
-        if ($this->_coreRegistry->registry('banner_register')->getId()) {
-            return __("Edit Banner '%1'", $this->escapeHtml($this->_coreRegistry->registry('banner_register')->getTitle()));
+        if ($this->_coreRegistry->registry('simpleaff_banner_register')->getId()) {
+            return __("Edit Banner '%1'", $this->escapeHtml($this->_coreRegistry->registry('simpleaff_banner_register')->getTitle()));
         } else {
             return __('New Banner');
         }

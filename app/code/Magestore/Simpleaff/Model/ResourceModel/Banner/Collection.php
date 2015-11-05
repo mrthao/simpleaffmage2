@@ -20,19 +20,37 @@
  */
 namespace Magestore\Simpleaff\Model\ResourceModel\Banner;
 
-use \Magestore\Simpleaff\Model\ResourceModel\AbstractCollection;
-
-class Collection extends AbstractCollection
+class Collection extends \Magestore\Simpleaff\Model\ResourceModel\AbstractCollection
 {
-	/**
-     * Template table name
-     *
-     * @var string
-     */
-    protected $_templateTable;
     protected function _construct()
     {
         $this->_init('Magestore\Simpleaff\Model\Banner', 'Magestore\Simpleaff\Model\ResourceModel\Banner');
-		$this->_templateTable = $this->getMainTable();
+    }
+	/**
+     * Returns pairs identifier - title for unique identifiers
+     * and pairs identifier|page_id - title for non-unique after first
+     *
+     * @return array
+     */
+    public function toOptionIdArray()
+    {
+        $res = [];
+        $existingIdentifiers = [];
+        foreach ($this as $item) {
+            $identifier = $item->getData('identifier');
+
+            $data['value'] = $identifier;
+            $data['label'] = $item->getData('title');
+
+            if (in_array($identifier, $existingIdentifiers)) {
+                $data['value'] .= '|' . $item->getData('banner_id');
+            } else {
+                $existingIdentifiers[] = $identifier;
+            }
+
+            $res[] = $data;
+        }
+
+        return $res;
     }
 }
